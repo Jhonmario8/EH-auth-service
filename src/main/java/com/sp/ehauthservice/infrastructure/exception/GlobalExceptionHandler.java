@@ -1,6 +1,9 @@
 package com.sp.ehauthservice.infrastructure.exception;
 
+import com.sp.ehauthservice.domain.exception.ConflictException;
 import com.sp.ehauthservice.domain.exception.DomainException;
+import com.sp.ehauthservice.domain.exception.ForbiddenException;
+import com.sp.ehauthservice.domain.exception.NotFoundException;
 import com.sp.ehauthservice.infrastructure.constants.InfrastructureConstants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,5 +36,23 @@ public class GlobalExceptionHandler {
                         error.getDefaultMessage()));
         return ResponseEntity.badRequest().body(new ErrorResponse(InfrastructureConstants.MSG_INVALID_DATA, InfrastructureConstants.BAD_REQUEST, errors));
 
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleConflictException(ConflictException ex) {
+        return ResponseEntity.status(InfrastructureConstants.CONFLICT)
+                .body(new ErrorResponse(ex.getMessage(), InfrastructureConstants.CONFLICT));
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponse> handleForbiddenException(ForbiddenException ex) {
+        return ResponseEntity.status(InfrastructureConstants.FORBIDDEN)
+                .body(new ErrorResponse(ex.getMessage(), InfrastructureConstants.FORBIDDEN));
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
+        return ResponseEntity.status(InfrastructureConstants.NOT_FOUND)
+                .body(new ErrorResponse(ex.getMessage(), InfrastructureConstants.NOT_FOUND));
     }
 }
