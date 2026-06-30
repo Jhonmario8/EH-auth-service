@@ -13,4 +13,6 @@ public class DomainConstants {
     public static final String INVALID_EMAIL_ADDRESS = "Invalid email address";
     public static final String INVALID_PASSWORD = "Invalid password. Password must be at least 8 characters long, contain at least one uppercase letter and one number.";
     public static final String MSG_ONLY_ADMIN_CAN_CREATE_CLIENT = "Only admin can create client";
+    public static final String MSG_INVALID_CREDENTIALS = "Invalid credentials";
+    public static final String MSG_UNAUTHORIZED_USER = "User is not authorized to access this resource";
 }

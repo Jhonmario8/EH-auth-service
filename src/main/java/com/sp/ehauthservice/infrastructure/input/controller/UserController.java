@@ -4,6 +4,7 @@ import com.sp.ehauthservice.application.dto.UserDTO;
 import com.sp.ehauthservice.application.handler.IUserHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +18,13 @@ public class UserController {
     private final IUserHandler userHandler;
 
     @PostMapping("/organizer")
-    public ResponseEntity<Void> createOrganizer(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<Void> createOrganizer(@Validated @RequestBody UserDTO userDTO) {
         userHandler.createOrganizer(userDTO);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/client")
-    public ResponseEntity<Void> createClient(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<Void> createClient(@Validated @RequestBody UserDTO userDTO) {
         userHandler.createClient(userDTO);
         return ResponseEntity.ok().build();
     }

@@ -1,9 +1,6 @@
 package com.sp.ehauthservice.infrastructure.exception;
 
-import com.sp.ehauthservice.domain.exception.ConflictException;
-import com.sp.ehauthservice.domain.exception.DomainException;
-import com.sp.ehauthservice.domain.exception.ForbiddenException;
-import com.sp.ehauthservice.domain.exception.NotFoundException;
+import com.sp.ehauthservice.domain.exception.*;
 import com.sp.ehauthservice.infrastructure.constants.InfrastructureConstants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -54,5 +51,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
         return ResponseEntity.status(InfrastructureConstants.NOT_FOUND)
                 .body(new ErrorResponse(ex.getMessage(), InfrastructureConstants.NOT_FOUND));
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(InvalidCredentialsException ex) {
+        return ResponseEntity.status(InfrastructureConstants.UNAUTHORIZED)
+                .body(new ErrorResponse(ex.getMessage(), InfrastructureConstants.UNAUTHORIZED));
     }
 }

@@ -11,4 +11,5 @@ public class ApplicationConstants {
     public static final String PHONE_SIZE_CONSTRAINT = "Phone must be between 7 and 20 characters";
     public static final String PASSWORD_SIZE_CONSTRAINT = "Password must be at least 8 characters long";
     public static final String EMAIL_INVALID_FORMAT = "Email format is invalid";
+
 }

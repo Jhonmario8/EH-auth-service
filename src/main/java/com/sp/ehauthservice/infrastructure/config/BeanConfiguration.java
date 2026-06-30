@@ -1,9 +1,8 @@
 package com.sp.ehauthservice.infrastructure.config;
 
-import com.sp.ehauthservice.domain.api.IAuthenticationServicePort;
-import com.sp.ehauthservice.domain.api.IPasswordServicePort;
-import com.sp.ehauthservice.domain.api.IUserServicePort;
+import com.sp.ehauthservice.domain.api.*;
 import com.sp.ehauthservice.domain.spi.IUserPersistencePort;
+import com.sp.ehauthservice.domain.usecase.AuthService;
 import com.sp.ehauthservice.domain.usecase.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +16,10 @@ public class BeanConfiguration {
 
     private final IUserPersistencePort userPersistencePort;
     private final IAuthenticationServicePort authenticationServicePort;
+    private final ITokenServicePort tokenServicePort;
+
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -26,5 +29,10 @@ public class BeanConfiguration {
     @Bean
     public IUserServicePort userServicePort(IPasswordServicePort passwordServicePort){
         return new UserService(userPersistencePort,authenticationServicePort,passwordServicePort );
+    }
+
+    @Bean
+    public IAuthServicePort authServicePort(IPasswordServicePort passwordServicePort){
+        return new AuthService(tokenServicePort,userPersistencePort,passwordServicePort);
     }
 }
