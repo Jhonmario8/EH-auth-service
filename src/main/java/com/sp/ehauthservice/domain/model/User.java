@@ -17,8 +17,9 @@ import java.time.LocalDateTime;
 public class User {
 
 
-    private static final String CELLPHONE_PATTERN = "^\\+?\\d{3,}$";
-
+    private static final String CELLPHONE_PATTERN = "^\\d{7,20}$";
+    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+    private static final String PASSWORD_PATTERN = "^(?=.*[A-Z])(?=.*\\d).{8,}$";
 
     private Long id;
     private String name;
@@ -37,6 +38,12 @@ public class User {
     public void validate(){
         if (!this.phone.matches(CELLPHONE_PATTERN)){
             throw new DomainException(DomainConstants.INVALID_CELLPHONE_NUMBER);
+        }
+        if (!this.email.matches(EMAIL_PATTERN)){
+            throw new DomainException(DomainConstants.INVALID_EMAIL_ADDRESS);
+        }
+        if (!password.matches(PASSWORD_PATTERN)) {
+            throw new DomainException(DomainConstants.INVALID_PASSWORD);
         }
 
     }

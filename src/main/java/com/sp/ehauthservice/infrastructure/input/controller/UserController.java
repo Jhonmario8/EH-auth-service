@@ -22,4 +22,10 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/client")
+    public ResponseEntity<Void> createClient(@RequestBody UserDTO userDTO) {
+        userHandler.createClient(userDTO);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -24,8 +24,20 @@ public class UserService implements IUserServicePort {
         validateUniqueness(user);
         user.setRole(Role.ORGANIZER);
         user.encodePassword(passwordServicePort);
+        user.validate();
         userPersistencePort.saveUser(user);
     }
+
+    @Override
+    public void createClient(User user) {
+        validateRole(Role.ADMIN, DomainConstants.MSG_ONLY_ADMIN_CAN_CREATE_CLIENT);
+        validateUniqueness(user);
+        user.setRole(Role.CLIENT);
+        user.encodePassword(passwordServicePort);
+        user.validate();
+        userPersistencePort.saveUser(user);
+    }
+
 
     private void validateRole(Role requiredRole, String errorMessage) {
         Role currentUserRole = authenticationServicePort.getCurrentUserRole();

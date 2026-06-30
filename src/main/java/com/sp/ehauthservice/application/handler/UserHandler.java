@@ -17,4 +17,9 @@ public class UserHandler implements  IUserHandler{
     public void createOrganizer(UserDTO userDTO) {
         userServicePort.createOrganizer(userMapper.toDomain(userDTO));
     }
+
+    @Override
+    public void createClient(UserDTO userDTO) {
+        userServicePort.createClient(userMapper.toDomain(userDTO));
+    }
 }
