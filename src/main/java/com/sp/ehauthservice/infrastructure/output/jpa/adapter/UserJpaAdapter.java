@@ -23,13 +23,13 @@ public class UserJpaAdapter implements IUserPersistencePort {
     private final IRoleRepository roleRepository;
 
     @Override
-    public void saveUser(User user) {
+    public User saveUser(User user) {
         RoleEntity roleEntity = roleRepository.findByName(user.getRole())
                 .orElseThrow(() -> new NotFoundException(DomainConstants.MSG_ROLE_NOT_FOUND + user.getRole().name()));
 
         UserEntity userEntity = mapper.toEntity(user);
         userEntity.setRoleEntity(roleEntity);
-        userRepository.save(userEntity);
+        return mapper.toDomain(userRepository.save(userEntity));
     }
 
     @Override

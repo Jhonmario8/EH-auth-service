@@ -4,6 +4,6 @@ import com.sp.ehauthservice.domain.model.User;
 
 public interface IUserServicePort {
 
-    void createOrganizer(User user);
-    void createClient(User user);
+    User createOrganizer(User user);
+    User createClient(User user);
 }

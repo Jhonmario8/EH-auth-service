@@ -11,6 +11,7 @@ import com.sp.ehauthservice.domain.model.User;
 import com.sp.ehauthservice.domain.spi.IUserPersistencePort;
 import lombok.RequiredArgsConstructor;
 
+
 @RequiredArgsConstructor
 public class UserService implements IUserServicePort {
 
@@ -19,29 +20,34 @@ public class UserService implements IUserServicePort {
     private final IPasswordServicePort passwordServicePort;
 
     @Override
-    public void createOrganizer(User user) {
-        validateRole(Role.ADMIN, DomainConstants.MSG_ONLY_ADMIN_CAN_CREATE_ORGANIZER);
-        validateUniqueness(user);
-        user.setRole(Role.ORGANIZER);
-        user.encodePassword(passwordServicePort);
-        user.validate();
-        userPersistencePort.saveUser(user);
+    public User createOrganizer(User user) {
+       return createUser(user,Role.ORGANIZER);
     }
 
     @Override
-    public void createClient(User user) {
-        validateRole(Role.ADMIN, DomainConstants.MSG_ONLY_ADMIN_CAN_CREATE_CLIENT);
+    public User createClient(User user) {
+        return createUser(user, Role.CLIENT);
+    }
+
+    private User createUser(User user, Role role){
+        if (role.equals(Role.ORGANIZER)) {
+            validateRole(DomainConstants.MSG_ONLY_ADMIN_CAN_CREATE_ORGANIZER);
+        } else {
+            validateRole(DomainConstants.MSG_ONLY_ADMIN_CAN_CREATE_CLIENT);
+        }
         validateUniqueness(user);
-        user.setRole(Role.CLIENT);
+        user.setRole(role);
         user.encodePassword(passwordServicePort);
         user.validate();
-        userPersistencePort.saveUser(user);
+        User userResponse = userPersistencePort.saveUser(user);
+        userResponse.setPassword(null);
+        return userResponse;
     }
 
 
-    private void validateRole(Role requiredRole, String errorMessage) {
+    private void validateRole(String errorMessage) {
         Role currentUserRole = authenticationServicePort.getCurrentUserRole();
-        if (currentUserRole != requiredRole) {
+        if (currentUserRole != Role.ADMIN) {
             throw new ForbiddenException(errorMessage);
         }
     }
